@@ -4,14 +4,12 @@ let favicon = require('serve-favicon');
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
-let libPath = path.join(__dirname, 'lib');
 // 全局常量设置
 global.ROOT_PATH = __dirname;
 global.LIB_PATH = path.join(global.ROOT_PATH, 'lib');
-/*global.db = require(libPath + '/db');
- global.Common = require(libPath + '/common');*/
+let db = require(path.join(LIB_PATH, 'db'));
 let index = require('./routes/index');
-let users = require('./routes/admin/users');
+let admin = require('./routes/admin/index');
 
 let app = express();
 
@@ -25,7 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/admin', users);
+app.use('/admin', admin);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

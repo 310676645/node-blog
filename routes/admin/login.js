@@ -4,7 +4,7 @@ let router = express.Router();
 let db = require(path.join(LIB_PATH, 'db'));
 let Common = require(path.join(LIB_PATH, 'common'));
 
-router.post('/login', function (req, res, next) {
+router.post('/', function (req, res, next) {
   db.connect();
   let body = req.body;
   if (!body.user_name || !body.user_pwd) {
