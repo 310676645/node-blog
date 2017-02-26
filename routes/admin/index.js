@@ -10,7 +10,6 @@ let db = require(path.join(LIB_PATH, 'db'));
 let Common = require(path.join(LIB_PATH, 'common'));
 router.use('/login', login);
 router.use('/category', (req, res, next) => {
-  db.connect();
   let userToken = req.body.user_token;
   if(!userToken) res.json({
     code: 1,

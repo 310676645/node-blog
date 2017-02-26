@@ -29,7 +29,6 @@ router.post('/', function (req, res, next) {
       }));
       return false;
     }
-    console.log(results);
     if (results.affectedRows > 0) {
       res.json(Common.json({
         code: 0,
