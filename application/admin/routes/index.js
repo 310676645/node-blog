@@ -6,6 +6,7 @@ let express = require('express');
 let router = express.Router();
 let login = require('./login');
 let category = require('./category');
+let article = require('./article');
 let db = require(path.join(LIB_PATH, 'db'));
 let Common = require(path.join(LIB_PATH, 'common'));
 router.use('/login', login);
@@ -39,4 +40,5 @@ router.use('/category', (req, res, next) => {
     }
   });
 }, category);
+router.use('/article', article);
 module.exports = router;

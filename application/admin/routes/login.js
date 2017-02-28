@@ -24,9 +24,11 @@ router.post('/', function (req, res, next) {
   };
   let updateTokenAndLastLogin = userInfo => {
     return new Promise((resolve, reject) => {
+      let token = Common.generateAccountToken();
       let sql = 'update admin set user_token = ?, last_login = ? where user_name = ?';
-      db.query(sql, [Common.generateAccountToken(), Common.generateTimestamp(), body.user_name], (error, results) => {
+      db.query(sql, [token, Common.generateTimestamp(), body.user_name], (error, results) => {
         if(error) reject(error);
+        userInfo['user_token'] = token;
         resolve(userInfo);
       });
     });
@@ -49,7 +51,7 @@ router.post('/', function (req, res, next) {
     return login(userInfo);
   }).catch(error => {
     res.json(Common.json({
-      code: 0,
+      code: 1,
       data: {},
       msg: error
     }));

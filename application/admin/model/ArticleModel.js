@@ -1,15 +1,17 @@
 /**
  * Created by songjd on 2017/2/26.
  */
+let Common = require('./../../../lib/common');
 let Model = require('./../../../lib/model');
-class CategoryModel extends Model {
+class ArticleModel extends Model {
   constructor() {
     super();
   }
 
   create(values = {}) {
     return new Promise((resolve, reject) => {
-      let sql = 'INSERT INTO category SET ?';
+      let sql = 'INSERT INTO article SET ?';
+      values['article_create_time'] = Common.generateTimestamp();
       this.db.query(sql, values, (error, results) => {
         if (error) {
           reject(error);
@@ -19,7 +21,7 @@ class CategoryModel extends Model {
           resolve();
           return true;
         }
-        reject('增加分类失败');
+        reject('增加文章成功');
         return false;
       });
     });
@@ -27,7 +29,7 @@ class CategoryModel extends Model {
 
   remove(id) {
     return new Promise((resolve, reject) => {
-      let sql = 'delete from category where `category_id` = ?';
+      let sql = 'delete from article where `article_id` = ?';
       this.db.query(sql, [id], (error, results) => {
         if (error) {
           reject(error);
@@ -37,7 +39,7 @@ class CategoryModel extends Model {
           resolve(results);
           return true
         }
-        reject('删除失败');
+        reject('文章删除失败');
         return false;
       });
     });
@@ -45,8 +47,8 @@ class CategoryModel extends Model {
 
   update(values) {
     return new Promise((resolve, reject) => {
-      let sql = 'update category set `category_pid` = ?, category_name = ? where category_id = ?';
-      this.db.query(sql, values, (error, results) => {
+      let sql = 'update article set `article_pid` = ?, `article_title` = ?, `article_desc` = ? where article_id = ?';
+      this.db.query(sql, [values.article_pid || '', values.article_title || 0, values.article_desc | ''], (error, results) => {
         if (error) {
           reject(resolve);
           return false;
@@ -55,7 +57,7 @@ class CategoryModel extends Model {
           resolve();
           return true;
         }
-        reject('更新失败');
+        reject('更新文章失败');
         return false;
       });
     });
@@ -64,7 +66,7 @@ class CategoryModel extends Model {
 
   findAll() {
     return new Promise((resolve, reject) => {
-      let sql = 'select * from category';
+      let sql = 'select * from article';
       this.db.query(sql, (error, result) => {
         if (error) {
           reject(error);
@@ -78,14 +80,14 @@ class CategoryModel extends Model {
 
   findOne(id) {
     return new Promise((resolve, reject) => {
-      let sql = 'select category_id, category_name from category where `category_id` = ?';
+      let sql = 'select * from article where `category_id` = ?';
       this.db.query(sql, [id], (error, row) => {
         if (error) {
           reject(error);
           return false;
         }
         if (row.length <= 0) {
-          reject('分类id错误');
+          reject('文章id错误');
           return false;
         }
         resolve(row);
@@ -96,4 +98,4 @@ class CategoryModel extends Model {
 
 }
 
-module.exports = CategoryModel;
+module.exports = ArticleModel;
