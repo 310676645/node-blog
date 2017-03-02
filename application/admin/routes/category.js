@@ -74,6 +74,23 @@ router.delete('/:id', (req, res, next) => {
   });
 });
 
+// 根据id查找分类
+router.get('/:id', (req, res, next) => {
+  let id = req.params.id;
+  categoryModel.findOne(id).then((data) => {
+    res.json(Common.json({
+      code: 0,
+      data: data[0],
+      msg: '获取分类成功'
+    }));
+  }).catch((error) => {
+    res.json(Common.json({
+      code: 1,
+      msg: error
+    }));
+  });
+});
+
 // 分类更新接口
 router.put('/:id', (req, res, next) => {
   let id = req.params.id;

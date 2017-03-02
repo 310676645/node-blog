@@ -90,7 +90,7 @@ class ArticleModel extends Model {
           reject('文章id错误');
           return false;
         }
-        resolve(row);
+        resolve(row[0]);
         return true;
       });
     });

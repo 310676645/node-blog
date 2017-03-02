@@ -31,7 +31,7 @@ router.use('/category', (req, res, next) => {
     }
     if (row.length <= 0) {
       res.json(Common.json({
-        code: 401,
+        code: 100001,
         data: {},
         msg: 'user_token无效'
       }));
