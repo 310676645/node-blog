@@ -12,7 +12,14 @@ class ArticleModel extends Model {
     return new Promise((resolve, reject) => {
       let sql = 'INSERT INTO article SET ?';
       values['article_create_time'] = Common.generateTimestamp();
-      this.db.query(sql, values, (error, results) => {
+      let {article_title, article_desc, article_content, article_create_time, category_id} = values
+      this.db.query(sql, {
+        article_title,
+        article_desc,
+        article_content,
+        article_create_time,
+        category_id
+      }, (error, results) => {
         if (error) {
           reject(error);
           return false;
@@ -45,12 +52,19 @@ class ArticleModel extends Model {
     });
   }
 
-  update(values) {
+  update(values, article_id) {
     return new Promise((resolve, reject) => {
-      let sql = 'update article set `article_pid` = ?, `article_title` = ?, `article_desc` = ? where article_id = ?';
-      this.db.query(sql, [values.article_pid || '', values.article_title || 0, values.article_desc | ''], (error, results) => {
+      let sql = 'update article set `category_id` = ?, `article_title` = ?, `article_desc` = ?, `article_content` = ? where `article_id` = ?';
+      let {article_title, article_desc, article_content, category_id} = values
+      this.db.query(sql, [
+        category_id,
+        article_title,
+        article_desc,
+        article_content,
+        article_id
+      ], (error, results) => {
         if (error) {
-          reject(resolve);
+          reject(error);
           return false;
         }
         if (results.affectedRows > 0) {
@@ -66,7 +80,7 @@ class ArticleModel extends Model {
 
   findAll() {
     return new Promise((resolve, reject) => {
-      let sql = 'select * from article';
+      let sql = 'select * from article inner join category where article.category_id = category.category_id order by article_create_time desc ';
       this.db.query(sql, (error, result) => {
         if (error) {
           reject(error);
@@ -80,7 +94,7 @@ class ArticleModel extends Model {
 
   findOne(id) {
     return new Promise((resolve, reject) => {
-      let sql = 'select * from article where `category_id` = ?';
+      let sql = 'select * from article where `article_id` = ?';
       this.db.query(sql, [id], (error, row) => {
         if (error) {
           reject(error);
