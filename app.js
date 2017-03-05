@@ -9,6 +9,7 @@ global.ROOT_PATH = __dirname;
 global.LIB_PATH = path.join(global.ROOT_PATH, 'lib');
 let db = require(path.join(LIB_PATH, 'db'));
 let admin = require('./application/admin/routes/index');
+let home = require('./application/home/routes/index');
 
 let app = express();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin', admin);
+app.use('/home', home);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

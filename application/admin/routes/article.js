@@ -6,7 +6,7 @@ let express = require('express');
 let router = express.Router();
 let db = require(path.join(LIB_PATH, 'db'));
 let Common = require(path.join(LIB_PATH, 'common'));
-let articleModel = new (require('./../model/ArticleModel'));
+let articleModel = new (require('./../../common/model/ArticleModel'));
 let Validator = require(path.join(LIB_PATH, 'validator'));
 function validataFunc(body) {
   let validator = new Validator();

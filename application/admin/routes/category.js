@@ -6,7 +6,7 @@ let express = require('express');
 let router = express.Router();
 let db = require(path.join(LIB_PATH, 'db'));
 let Common = require(path.join(LIB_PATH, 'common'));
-let categoryModel = new (require('./../model/CategoryModel'));
+let categoryModel = new (require('./../../common/model/CategoryModel'));
 
 // 分类创建接口
 router.post('/', (req, res, next) => {
