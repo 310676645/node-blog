@@ -21,7 +21,7 @@ class ArticleModel extends Model {
         category_id
       }, (error, results) => {
         if (error) {
-          reject(error);
+          reject(this.db.showError(error));
           return false;
         }
         if (results.affectedRows > 0) {
@@ -39,7 +39,7 @@ class ArticleModel extends Model {
       let sql = 'delete from article where `article_id` = ?';
       this.db.query(sql, [id], (error, results) => {
         if (error) {
-          reject(error);
+          reject(this.db.showError(error));
           return false;
         }
         if (results.affectedRows > 0) {
@@ -78,12 +78,18 @@ class ArticleModel extends Model {
   }
 
 
-  findAll() {
+  findAll(currentPage, pageSize) {
+    let page = new this.Page({
+      page: currentPage,
+      pageSize
+    });
+    let {m, n} = page.getPage();
     return new Promise((resolve, reject) => {
-      let sql = 'select * from article inner join category where article.category_id = category.category_id order by article_create_time desc ';
-      this.db.query(sql, (error, result) => {
+      let selectTotalCountSql = 'select count(*) as total from article;';
+      let selectDataSql = `select * from article inner join category where article.category_id = category.category_id order by article_create_time desc limit ${m},${n}`;
+      this.db.query(selectTotalCountSql +　selectDataSql, (error, result) => {
         if (error) {
-          reject(error);
+          reject(this.db.showError(error));
           return false;
         }
         resolve(result);
@@ -97,7 +103,7 @@ class ArticleModel extends Model {
       let sql = 'select * from article where `article_id` = ?';
       this.db.query(sql, [id], (error, row) => {
         if (error) {
-          reject(error);
+          reject(this.db.showError(error));
           return false;
         }
         if (row.length <= 0) {

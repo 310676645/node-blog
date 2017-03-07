@@ -114,12 +114,12 @@ router.delete('/:id', (req, res, next) => {
       code: 0,
       msg: '文章删除成功',
       data
-    }))
+    }));
   }).catch(error => {
     res.json(Common.json({
       code: 1,
       msg: error
-    }))
+    }));
   });
 })
 module.exports = router;
