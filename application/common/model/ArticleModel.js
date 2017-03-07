@@ -100,7 +100,7 @@ class ArticleModel extends Model {
 
   findOne(id) {
     return new Promise((resolve, reject) => {
-      let sql = 'select * from article where `article_id` = ?';
+      let sql = 'select * from article inner join category where `article_id` = ? and article.category_id = category.category_id';
       this.db.query(sql, [id], (error, row) => {
         if (error) {
           reject(this.db.showError(error));
